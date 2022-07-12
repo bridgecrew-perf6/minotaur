@@ -1,6 +1,7 @@
 package com.modrinth.minotaur.dependencies.container;
 
 import com.modrinth.minotaur.dependencies.Dependency;
+import lombok.Getter;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.model.ObjectFactory;
 
@@ -13,9 +14,25 @@ import java.util.stream.Collectors;
  */
 public class DependencyDSL {
     private final NamedDomainObjectContainer<NamedDependency> dependencies;
+    /**
+     * The reference to an {@link NamedDependencyContainer.Incompatible} instance.
+     */
+    @Getter
     private final NamedDependencyContainer.Incompatible incompatible;
+    /**
+     * The reference to an {@link NamedDependencyContainer.Optional} instance.
+     */
+    @Getter
     private final NamedDependencyContainer.Optional optional;
+    /**
+     * The reference to a {@link NamedDependencyContainer.Required} instance.
+     */
+    @Getter
     private final NamedDependencyContainer.Required required;
+    /**
+     * The reference to an {@link NamedDependencyContainer.Embedded} instance.
+     */
+    @Getter
     private final NamedDependencyContainer.Embedded embedded;
 
     /**
@@ -39,45 +56,5 @@ public class DependencyDSL {
      */
     public List<Dependency> getNamedDependenciesAsList() {
         return this.dependencies.stream().map(NamedDependency::getDependency).collect(Collectors.toList());
-    }
-
-    /**
-     * Retrieve the reference to an {@link NamedDependencyContainer.Incompatible} instance.
-     * Provided as a utility method for external uses.
-     *
-     * @return incompatible {@link NamedDependencyContainer.Incompatible}
-     */
-    public NamedDependencyContainer.Incompatible getIncompatible() {
-        return this.incompatible;
-    }
-
-    /**
-     * Retrieve the reference to an {@link NamedDependencyContainer.Optional} instance.
-     * Provided as a utility method for external uses.
-     *
-     * @return optional {@link NamedDependencyContainer.Optional}
-     */
-    public NamedDependencyContainer.Optional getOptional() {
-        return this.optional;
-    }
-
-    /**
-     * Retrieve the reference to an {@link NamedDependencyContainer.Required} instance.
-     * Provided as a utility method for external uses.
-     *
-     * @return required {@link NamedDependencyContainer.Required}
-     */
-    public NamedDependencyContainer.Required getRequired() {
-        return this.required;
-    }
-
-    /**
-     * Retrieve the reference to an {@link NamedDependencyContainer.Embedded} instance.
-     * Provided as a utility method for external uses.
-     *
-     * @return embedded {@link NamedDependencyContainer.Embedded}
-     */
-    public NamedDependencyContainer.Embedded getEmbedded() {
-        return this.embedded;
     }
 }

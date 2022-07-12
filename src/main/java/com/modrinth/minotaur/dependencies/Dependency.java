@@ -1,7 +1,7 @@
 package com.modrinth.minotaur.dependencies;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Locale;
@@ -15,36 +15,27 @@ public class Dependency {
     /**
      * The {@link DependencyType} of the dependency.
      */
-    @Expose
+    @Getter
     @SerializedName("dependency_type")
     private final String dependencyType;
 
     /**
      * Creates a new dependency relationship.
      *
-     * @param id   The ID of the project or version to create a dependency with.
      * @param type The type of dependency being created.
      */
     @ApiStatus.Internal
-    Dependency(String id, DependencyType type) {
+    Dependency(DependencyType type) {
         this.dependencyType = type.toString().toLowerCase(Locale.ROOT);
     }
 
     /**
      * Creates a new dependency relationship.
      *
-     * @param id   The ID of the project or version to create a dependency with.
      * @param type The type of dependency being created.
      */
     @ApiStatus.Internal
-    Dependency(String id, String type) {
+    Dependency(String type) {
         this.dependencyType = type;
-    }
-
-    /**
-     * @return {@link #dependencyType}
-     */
-    public String getDependencyType() {
-        return this.dependencyType;
     }
 }

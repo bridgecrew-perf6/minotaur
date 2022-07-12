@@ -87,7 +87,7 @@ public class TaskModrinthUpload extends DefaultTask {
      *   <li>Resolves each file or task to be uploaded, ensuring they're all valid</li>
      *   <li>Uploads these files to the Modrinth API under a new version</li>
      * </ol>
-     * This is all in a try/catch block so that, if {@link ModrinthExtension#getFailSilently()} is enabled, it won't
+     * This is all in a try/catch block so that, if {@link ModrinthExtension#failSilently} is enabled, it won't
      * fail the build if it fails to upload the version to Modrinth.
      */
     @TaskAction
@@ -185,17 +185,19 @@ public class TaskModrinthUpload extends DefaultTask {
             fileParts.add(String.valueOf(i));
         }
 
-        final VersionData data = new VersionData();
-        data.setProjectId(resolveId(extension.getProjectId().get()));
-        data.setVersionNumber(extension.getVersionNumber().get());
-        data.setVersionTitle(extension.getVersionName().get());
-        data.setChangelog(extension.getChangelog().get().replaceAll("\r\n", "\n"));
-        data.setVersionType(extension.getVersionType().get().toLowerCase(Locale.ROOT));
-        data.setGameVersions(extension.getGameVersions().get());
-        data.setLoaders(extension.getLoaders().get());
-        data.setDependencies(this.dependencies);
-        data.setFileParts(fileParts);
-        data.setPrimaryFile("0"); // The primary file will always be of the first index in the list
+        final VersionData data = new VersionData(
+            resolveId(extension.getProjectId().get()),
+            extension.getVersionNumber().get(),
+            extension.getVersionName().get(),
+            extension.getChangelog().get().replaceAll("\r\n", "\n"),
+            extension.getVersionType().get().toLowerCase(Locale.ROOT),
+            extension.getGameVersions().get(),
+            extension.getLoaders().get(),
+            this.dependencies,
+            fileParts,
+            false,
+            "0" // The primary file will always be of the first index in the list
+        );
 
         if (extension.getDebugMode().get()) {
             log.lifecycle("Full data to be sent for upload: {}", GSON.toJson(data));
